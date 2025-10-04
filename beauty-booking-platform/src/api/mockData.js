@@ -27,3 +27,42 @@ export const salons = [
     categories: ['nails', 'pedicure'],
   }
 ];
+
+export const bookings = [
+  {
+    id: 101,
+    userId: 1, // Corresponds to our mock logged-in user
+    salon: {
+      id: 1,
+      name: 'Elegance Studio',
+      city: 'Sofia',
+    },
+    service: 'Women\'s Haircut',
+    date: '2025-11-15T14:00:00Z', // ISO format for dates
+    status: 'Confirmed'
+  },
+  {
+    id: 102,
+    userId: 1,
+    salon: {
+      id: 3,
+      name: 'Nail Art Paradise',
+      city: 'Varna',
+    },
+    service: 'Gel Manicure',
+    date: '2025-11-20T11:30:00Z',
+    status: 'Confirmed'
+  },
+  {
+    id: 103,
+    userId: 1,
+    salon: {
+      id: 2,
+      name: 'Modern Curls',
+      city: 'Plovdiv',
+    },
+    service: 'Coloring',
+    date: '2025-10-28T09:00:00Z',
+    status: 'Completed'
+  }
+];

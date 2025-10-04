@@ -1,7 +1,20 @@
-import { Link } from 'react-router-dom'; // Import Link for client-side navigation
-import { Sparkles } from 'lucide-react'; // Import a nice icon for the logo
+import { Link, useNavigate } from 'react-router-dom'; 
+import { Sparkles, LogOut, User } from 'lucide-react'; 
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../features/auth/authSlice';
 
 const Header = () => {
+
+  // --- 2. Get data from the Redux store ---
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/'); // Redirect to home after logout
+  };
+
   return (
     <header className="bg-white shadow-md">
       <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -17,12 +30,29 @@ const Header = () => {
           <Link to="/salons" className="text-base-text hover:text-primary transition-colors">Salons</Link>
         </div>
 
-        {/* Action Buttons */}
+        {/* Dynamic Action Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          <Link to="/login" className="text-base-text font-medium hover:text-primary transition-colors">Log In</Link>
-          <Link to="/register" className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-primary-hover transition-all">
-            Register
-          </Link>
+          {isAuthenticated ? (
+            // If LOGGED IN
+            <>
+              <Link to="/profile" className="flex items-center gap-2 font-medium">
+                <User size={20} />
+                <span>Hi, {user.name}</span>
+              </Link>
+              <button onClick={handleLogout} className="flex items-center gap-2 text-base-text font-medium hover:text-primary transition-colors">
+                <LogOut size={20} />
+                <span>Logout</span>
+              </button>
+            </>
+          ) : (
+            // If LOGGED OUT 
+            <>
+              <Link to="/login" className="text-base-text font-medium hover:text-primary transition-colors">Log In</Link>
+              <Link to="/register" className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-primary-hover transition-all">
+                Register
+              </Link>
+            </>
+          )}
         </div>
         
         {/* Mobile Menu Button (we'll add functionality later) */}
