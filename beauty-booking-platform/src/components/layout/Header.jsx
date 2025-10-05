@@ -1,11 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom'; 
-import { Sparkles, LogOut, User } from 'lucide-react'; 
+import { Sparkles, LogOut, User, Building } from 'lucide-react'; 
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../features/auth/authSlice';
 
 const Header = () => {
 
-  // --- 2. Get data from the Redux store ---
+  // Get data from the Redux store 
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,10 +35,19 @@ const Header = () => {
           {isAuthenticated ? (
             // If LOGGED IN
             <>
-              <Link to="/profile" className="flex items-center gap-2 font-medium">
-                <User size={20} />
-                <span>Hi, {user.name}</span>
-              </Link>
+              {user.role === 'client' && (
+                <Link to="/profile" className="flex items-center gap-2 font-medium">
+                  <User size={20} />
+                  <span>My Profile</span>
+                </Link>
+              )}
+              {user.role === 'center' && (
+                <Link to="/center-admin" className="flex items-center gap-2 font-medium">
+                  <Building size={20} />
+                  <span>My Center</span>
+                </Link>
+              )}
+
               <button onClick={handleLogout} className="flex items-center gap-2 text-base-text font-medium hover:text-primary transition-colors">
                 <LogOut size={20} />
                 <span>Logout</span>
