@@ -39,7 +39,38 @@ const SalonsPage = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-8">Explore Beauty Centers</h1>
-      {/* We'll add filter controls here later */}
+      
+      {/* FILTER BAR */}
+      <div className="bg-white p-4 rounded-lg shadow-md mb-8 flex flex-col md:flex-row gap-4 items-center">
+        <div className="flex-grow w-full md:w-auto">
+          <label htmlFor="city-filter" className="sr-only">City</label>
+          <select id="city-filter" className="w-full p-2 border rounded-md">
+            <option>All Cities</option>
+            <option>Sofia</option>
+            <option>Plovdiv</option>
+            <option>Varna</option>
+          </select>
+        </div>
+        <div className="flex-grow w-full md:w-auto">
+          <label htmlFor="category-filter" className="sr-only">Category</label>
+          <select id="category-filter" className="w-full p-2 border rounded-md">
+            <option>All Categories</option>
+            <option>Hair</option>
+            <option>Nails</option>
+            <option>Pedicure</option>
+          </select>
+        </div>
+        <div className="flex-grow w-full md:w-auto">
+          <label htmlFor="rating-filter" className="sr-only">Rating</label>
+          <select id="rating-filter" className="w-full p-2 border rounded-md">
+            <option>Any Rating</option>
+            <option>4 Stars & Up</option>
+            <option>3 Stars & Up</option>
+          </select>
+        </div>
+        <button className="w-full md:w-auto px-6 py-2 bg-secondary text-white rounded-md">Apply</button>
+      </div>
+
       {content}
     </div>
   );
