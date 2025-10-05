@@ -17,6 +17,16 @@ const CenterAdminPage = () => {
   const myBookings = mockBookings.filter(b => b.salon.id === user.salonId);
   const myServices = mockServices.filter(s => s.salonId === user.salonId);
 
+  // Group bookings by date for calendar display
+  const bookingsByDate = myBookings.reduce((acc, booking) => {
+    const date = new Date(booking.date).getDate(); 
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(booking);
+    return acc;
+  }, {});
+
   if (!mySalon) {
     return <p>Loading salon data...</p>;
   }
@@ -72,15 +82,39 @@ const CenterAdminPage = () => {
 
         {/* Right Column: Bookings */}
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4 flex items-center"><Calendar size={20} className="mr-2" />Upcoming Bookings</h2>
-          <div className="space-y-4">
-            {myBookings.map(booking => (
-              <div key={booking.id} className="border-b pb-2">
-                <p className="font-semibold">{booking.service}</p>
-                <p className="text-sm text-secondary-text flex items-center"><User size={14} className="mr-1" /> Booked by User ID: {booking.userId}</p>
-                <p className="text-sm text-secondary-text">{formatDate(booking.date)}</p>
-              </div>
-            ))}
+          <h2 className="text-xl font-semibold mb-4 flex items-center"><Calendar size={20} className="mr-2" />Bookings Calendar</h2>
+          
+          {/* Month Header */}
+          <div className="flex justify-between items-center mb-2">
+            <span className="font-semibold">November 2025</span>
+          </div>
+          
+          {/* Days Grid */}
+          <div className="grid grid-cols-7 text-center text-sm gap-1">
+            <div className="font-semibold text-gray-400">Mo</div>
+            <div className="font-semibold text-gray-400">Tu</div>
+            <div className="font-semibold text-gray-400">We</div>
+            <div className="font-semibold text-gray-400">Th</div>
+            <div className="font-semibold text-gray-400">Fr</div>
+            <div className="font-semibold text-gray-400">Sa</div>
+            <div className="font-semibold text-gray-400">Su</div>
+            
+            {/* Mock Calendar Days for November 2025 (starts on a Saturday) */}
+            {/* Empty days for placeholder */}
+            {Array.from({ length: 5 }).map((_, i) => <div key={`empty-${i}`}></div>)}
+
+            {Array.from({ length: 30 }, (_, i) => i + 1).map(day => {
+              const dayBookings = bookingsByDate[day] || [];
+              return (
+                <div key={day} className={`p-1 border rounded ${dayBookings.length > 0 ? 'bg-blue-50 border-blue-200' : 'border-transparent'}`}>
+                  <span className={`font-semibold ${dayBookings.length > 0 ? 'text-blue-600' : ''}`}>{day}</span>
+                  {/* Display a dot for each booking */}
+                  <div className="flex justify-center mt-1 space-x-1">
+                    {dayBookings.map(b => <div key={b.id} className="w-1.5 h-1.5 bg-success rounded-full" title={b.service}></div>)}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
