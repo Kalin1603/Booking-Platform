@@ -10,6 +10,9 @@ const RegisterPage = React.lazy(() => import('../pages/RegisterPage'));
 const ProfilePage = React.lazy(() => import('../pages/ProfilePage'));
 const CenterAdminPage = React.lazy(() => import('../pages/CenterAdminPage'));
 const PlaceholderPage = React.lazy(() => import('../pages/PlaceholderPage')); 
+const AboutPage = React.lazy(() => import('../pages/AboutPage'));
+const ContactPage = React.lazy(() => import('../pages/ContactPage'));
+const PrivacyPolicyPage = React.lazy(() => import('../pages/PrivacyPolicyPage'));
 
 // A simple loading component to show while the page code is being downloaded
 const PageLoader = () => <div className="flex justify-center items-center h-screen"><p>Loading...</p></div>;
@@ -25,9 +28,9 @@ const AppRoutes = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profile" element={<ProtectedRoute allowedRoles={['client']}> <ProfilePage /> </ProtectedRoute>} />
         <Route path="/center-admin" element={<ProtectedRoute allowedRoles={['center']}> <CenterAdminPage /> </ProtectedRoute>} />
-        <Route path="/about" element={<PlaceholderPage title="About Us" />} />
-        <Route path="/contact" element={<PlaceholderPage title="Contact Us" />} />
-        <Route path="/privacy" element={<PlaceholderPage title="Privacy Policy" />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
       </Routes>
     </Suspense>
   );
