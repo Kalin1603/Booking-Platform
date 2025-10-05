@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { salons, bookings as mockBookings } from '../api/mockData';
-import { Calendar, User, Info, DollarSign } from 'lucide-react';
+import { salons, bookings as mockBookings, services as mockServices } from '../api/mockData';
+import { Calendar, User, Info, DollarSign, Edit, Trash2 } from 'lucide-react';
 
 // Helper to format the date
 const formatDate = (isoString) => {
@@ -15,6 +15,7 @@ const CenterAdminPage = () => {
   // In a real app, this data would be fetched. Here, we find it in our mock files.
   const mySalon = salons.find(s => s.id === user.salonId);
   const myBookings = mockBookings.filter(b => b.salon.id === user.salonId);
+  const myServices = mockServices.filter(s => s.salonId === user.salonId);
 
   if (!mySalon) {
     return <p>Loading salon data...</p>;
@@ -39,12 +40,33 @@ const CenterAdminPage = () => {
               Edit Profile
             </button>
           </div>
+          
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold flex items-center"><DollarSign size={20} className="mr-2" />My Services</h2>
-            <p className="text-secondary-text mt-4">Service management UI will go here.</p>
-             <button className="mt-4 px-4 py-2 text-sm text-white bg-success rounded-md hover:opacity-90">
-              Add New Service
-            </button>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold flex items-center"><DollarSign size={20} className="mr-2" />My Services</h2>
+              <button className="px-4 py-2 text-sm text-white bg-success rounded-md hover:opacity-90">
+                Add New Service
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              {myServices.length > 0 ? (
+                myServices.map(service => (
+                  <div key={service.id} className="border-t pt-4 flex justify-between items-start">
+                    <div>
+                      <p className="font-semibold">{service.name}</p>
+                      <p className="text-sm text-secondary-text">{service.duration} min • {service.price.toFixed(2)} BGN</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <button className="p-2 text-blue-600 hover:bg-blue-100 rounded-full"><Edit size={16} /></button>
+                      <button className="p-2 text-error hover:bg-red-100 rounded-full"><Trash2 size={16} /></button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-secondary-text mt-4">You have not added any services yet.</p>
+              )}
+            </div>
           </div>
         </div>
 
