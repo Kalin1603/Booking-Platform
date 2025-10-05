@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSalonById } from '../features/salons/salonsSlice';
-import { MapPin, Star } from 'lucide-react';
+import { fetchSalonById, fetchServicesBySalonId } from '../features/salons/salonsSlice';
+import { MapPin, Star, Clock, DollarSign, Book } from 'lucide-react';
 
 const SalonDetailPage = () => {
   const dispatch = useDispatch();
@@ -14,6 +14,8 @@ const SalonDetailPage = () => {
   const {
     selectedSalon: salon,
     selectedSalonStatus: status,
+    selectedSalonServices: services,
+    selectedSalonServicesStatus: servicesStatus,  
     error
   } = useSelector((state) => state.salons);
 
@@ -21,7 +23,11 @@ const SalonDetailPage = () => {
     // We fetch the data when the component loads, or if the salonId changes.
     // We also check to avoid re-fetching if the correct salon is already loaded.
     if (!salon || salon.id !== parseInt(salonId)) {
+      // Dispatch action to fetch salon details
       dispatch(fetchSalonById(salonId));
+
+      // Dispatch action to fetch services for this salon
+      dispatch(fetchServicesBySalonId(salonId));
     }
   }, [salonId, salon, dispatch]);
 
@@ -60,10 +66,49 @@ const SalonDetailPage = () => {
         </div>
       </div>
       
-      {/* Placeholder for Services/Booking section */}
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Services</h2>
-        <p className="text-secondary-text">Service list and booking calendar will be displayed here.</p>
+      {/* Services, Calendar, and Reviews Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+        {/* Main column for Services */}
+        <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold mb-6">Services</h2>
+          
+          {servicesStatus === 'loading' && <p>Loading services...</p>}
+          
+          {servicesStatus === 'succeeded' && (
+            <div className="space-y-4">
+              {services.map(service => (
+                <div key={service.id} className="flex justify-between items-center border-b border-divider pb-4">
+                  <div>
+                    <h3 className="font-semibold text-lg">{service.name}</h3>
+                    <p className="text-secondary-text text-sm mt-1">{service.description}</p>
+                    <div className="flex items-center gap-4 text-sm mt-2 text-gray-600">
+                      <span className="flex items-center"><Clock size={14} className="mr-1" /> {service.duration} min</span>
+                      <span className="flex items-center"><DollarSign size={14} className="mr-1" /> {service.price.toFixed(2)} BGN</span>
+                    </div>
+                  </div>
+                  <button className="bg-primary text-white font-semibold px-4 py-2 rounded-md hover:bg-primary-hover flex items-center gap-2 whitespace-nowrap">
+                    <Book size={16} />
+                    Book Now
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Sidebar for Calendar & Reviews */}
+        <div className="space-y-8">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4">Book an Appointment</h2>
+            <p className="text-secondary-text">A visual calendar component will be displayed here.</p>
+            {/* Placeholder for a calendar */}
+            <div className="mt-4 h-48 bg-gray-100 rounded flex items-center justify-center text-gray-400">Calendar Mock</div>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4">Reviews</h2>
+            <p className="text-secondary-text">A list of user reviews will be displayed here.</p>
+          </div>
+        </div>
       </div>
     </div>
   );

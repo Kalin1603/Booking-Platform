@@ -1,4 +1,4 @@
-import { salons } from './mockData';
+import { salons, services } from './mockData';
 
 // This function simulates a network request.
 export const fetchSalonsAPI = () => {
@@ -25,5 +25,16 @@ export const fetchSalonByIdAPI = (salonId) => {
         reject(new Error("Salon not found"));
       }
     }, 500);
+  });
+};
+
+export const fetchServicesBySalonIdAPI = (salonId) => {
+  console.log(`Mock API: Fetching services for salon ID: ${salonId}...`);
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const salonServices = services.filter(s => s.salonId === parseInt(salonId));
+      console.log(`Mock API: Found ${salonServices.length} services.`);
+      resolve({ data: salonServices });
+    }, 300); 
   });
 };

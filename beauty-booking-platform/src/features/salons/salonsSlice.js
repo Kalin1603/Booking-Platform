@@ -1,9 +1,7 @@
-// src/features/salons/salonsSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchSalonsAPI, fetchSalonByIdAPI } from '../../api/salonApi';
+import { fetchSalonsAPI, fetchSalonByIdAPI, fetchServicesBySalonIdAPI } from '../../api/salonApi';
 
 // createAsyncThunk handles asynchronous actions, like fetching data.
-// We give it a name ('salons/fetchSalons') and an async function.
 export const fetchSalons = createAsyncThunk('salons/fetchSalons', async () => {
   const response = await fetchSalonsAPI();
   return response.data; // The returned data becomes the "payload"
@@ -14,12 +12,20 @@ export const fetchSalonById = createAsyncThunk('salons/fetchSalonById', async (s
   return response.data;
 });
 
+export const fetchServicesBySalonId = createAsyncThunk('salons/fetchServices', async (salonId) => {
+  const response = await fetchServicesBySalonIdAPI(salonId);
+  return response.data;
+});
+
 const initialState = {
   items: [],
-  status: 'idle', // For the list
+  status: 'idle', // Status for the list of salons
   // New properties for the single salon view
   selectedSalon: null,
   selectedSalonStatus: 'idle', // Status for the detail page
+  // New properties for services
+  selectedSalonServices: [],
+  selectedSalonServicesStatus: 'idle', // Status for services
   error: null,
 };
 
@@ -27,11 +33,12 @@ const salonsSlice = createSlice({
   name: 'salons',
   initialState,
   reducers: {
-    // Add synchronous actions here if needed later
+    // Synchronous actions here if needed later
   },
   // extraReducers handle actions defined outside the slice, like our async thunk.
   extraReducers: (builder) => {
     builder
+      // Cases for fetching the list of salons
       .addCase(fetchSalons.pending, (state) => {
         state.status = 'loading'; // When the fetch starts, set status to loading
       })
@@ -43,7 +50,7 @@ const salonsSlice = createSlice({
         state.status = 'failed'; // When the fetch fails...
         state.error = action.error.message; // ...store the error message
       })
-      // New cases for fetching a single salon by ID
+      // Cases for fetching a single salon by ID
       .addCase(fetchSalonById.pending, (state) => {
         state.selectedSalonStatus = 'loading';
       })
@@ -54,6 +61,18 @@ const salonsSlice = createSlice({
       .addCase(fetchSalonById.rejected, (state, action) => {
         state.selectedSalonStatus = 'failed';
         state.error = action.error.message;
+      })
+      // Cases for fetching services by salon ID
+      .addCase(fetchServicesBySalonId.pending, (state) => {
+        state.selectedSalonServicesStatus = 'loading';
+      })
+      .addCase(fetchServicesBySalonId.fulfilled, (state, action) => {
+        state.selectedSalonServicesStatus = 'succeeded';
+        state.selectedSalonServices = action.payload;
+      })
+      .addCase(fetchServicesBySalonId.rejected, (state, action) => {
+        state.selectedSalonServicesStatus = 'failed';
+        state.error = action.error.message; 
       });
   },
 });

@@ -1,4 +1,3 @@
-// src/pages/ProfilePage.jsx
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { bookings as mockBookings } from '../api/mockData'; // Import mock bookings
@@ -14,7 +13,6 @@ const ProfilePage = () => {
   // Get the current user from the Redux store
   const { user } = useSelector((state) => state.auth);
 
-  // In a real app, you would fetch this from an API. For now, we filter the mock data.
   const userBookings = mockBookings.filter(b => b.userId === 1); 
 
   // This is a safeguard in case the user somehow gets here without being logged in.

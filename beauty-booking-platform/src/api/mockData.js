@@ -66,3 +66,18 @@ export const bookings = [
     status: 'Completed'
   }
 ];
+
+export const services = [
+  // Services for Elegance Studio 
+  { id: 101, salonId: 1, name: "Women's Haircut & Style", duration: 60, price: 50, description: "Includes wash, cut, and professional blow-dry." },
+  { id: 102, salonId: 1, name: "Full Color", duration: 120, price: 120, description: "Single-process color application from roots to ends." },
+  { id: 103, salonId: 1, name: "Classic Manicure", duration: 45, price: 30, description: "Nail shaping, cuticle care, and polish." },
+  
+  // Services for Modern Curls 
+  { id: 201, salonId: 2, name: "Curly Haircut", duration: 75, price: 80, description: "Specialized dry-cutting technique for curly hair." },
+  { id: 202, salonId: 2, name: "Balayage", duration: 180, price: 250, description: "Hand-painted highlights for a natural, sun-kissed look." },
+  
+  // Services for Nail Art Paradise 
+  { id: 301, salonId: 3, name: "Gel Manicure", duration: 60, price: 55, description: "Long-lasting gel polish with intricate nail art options." },
+  { id: 302, salonId: 3, name: "Luxury Pedicure", duration: 75, price: 70, description: "Includes exfoliating scrub, hydrating mask, and massage." },
+];
