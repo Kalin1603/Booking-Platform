@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSalonById, fetchServicesBySalonId } from '../features/salons/salonsSlice';
 import { MapPin, Star, Clock, DollarSign, Book } from 'lucide-react';
+import { reviews as mockReviews } from '../api/mockData';
 
 const SalonDetailPage = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,9 @@ const SalonDetailPage = () => {
   if (!salon) {
     return <p className="text-center mt-10">Salon not found.</p>;
   }
+
+  // Filter reviews for the current salon
+  const salonReviews = mockReviews.filter(r => r.salonId === salon?.id);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -97,20 +101,49 @@ const SalonDetailPage = () => {
         </div>
 
         {/* Sidebar for Calendar & Reviews */}
-        <div className="space-y-8">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4">Book an Appointment</h2>
-            <p className="text-secondary-text">A visual calendar component will be displayed here.</p>
-            {/* Placeholder for a calendar */}
-            <div className="mt-4 h-48 bg-gray-100 rounded flex items-center justify-center text-gray-400">Calendar Mock</div>
+      <div className="space-y-8">
+        {/*Mocked calendar*/}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-bold mb-4">Book an Appointment</h2>
+          {/* Month Header */}
+          <div className="flex justify-between items-center mb-2">
+            <button className="text-gray-500 hover:text-primary">&lt;</button>
+            <span className="font-semibold">October 2025</span>
+            <button className="text-gray-500 hover:text-primary">&gt;</button>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4">Reviews</h2>
-            <p className="text-secondary-text">A list of user reviews will be displayed here.</p>
+          {/* Days Grid */}
+          <div className="grid grid-cols-7 text-center text-sm gap-2">
+            <div className="text-gray-400">Mo</div><div className="text-gray-400">Tu</div><div className="text-gray-400">We</div><div className="text-gray-400">Th</div><div className="text-gray-400">Fr</div><div className="text-gray-400">Sa</div><div className="text-gray-400">Su</div>
+            {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
+              <button key={day} className={`p-2 rounded-full hover:bg-primary hover:text-white ${day === 28 ? 'bg-primary text-white' : ''}`}>
+                {day}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/*Mocked reviews*/}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-bold mb-4">Reviews ({salonReviews.length})</h2>
+          <div className="space-y-4">
+            {salonReviews.length > 0 ? salonReviews.map(review => (
+              <div key={review.id} className="border-b pb-2">
+                <div className="flex justify-between">
+                  <span className="font-semibold">{review.author}</span>
+                  <span className="flex items-center">
+                    {Array.from({ length: review.rating }).map((_, i) => <Star key={i} size={16} className="text-yellow-400 fill-yellow-400" />)}
+                  </span>
+                </div>
+                <p className="text-secondary-text mt-1">{review.comment}</p>
+              </div>
+            )) : (
+              <p className="text-secondary-text">No reviews yet.</p>
+            )}
           </div>
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

@@ -51,6 +51,7 @@ const SalonsPage = () => {
             <option>Varna</option>
           </select>
         </div>
+        {/*Category filter*/}
         <div className="flex-grow w-full md:w-auto">
           <label htmlFor="category-filter" className="sr-only">Category</label>
           <select id="category-filter" className="w-full p-2 border rounded-md">
@@ -60,6 +61,17 @@ const SalonsPage = () => {
             <option>Pedicure</option>
           </select>
         </div>
+        {/*Price filter*/}
+        <div className="flex-grow w-full md:w-auto">
+          <label htmlFor="price-filter" className="sr-only">Price</label>
+          <select id="price-filter" className="w-full p-2 border rounded-md">
+            <option>Any Price</option>
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select>
+        </div>
+        {/*Rating filter*/}
         <div className="flex-grow w-full md:w-auto">
           <label htmlFor="rating-filter" className="sr-only">Rating</label>
           <select id="rating-filter" className="w-full p-2 border rounded-md">

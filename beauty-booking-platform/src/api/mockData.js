@@ -81,3 +81,10 @@ export const services = [
   { id: 301, salonId: 3, name: "Gel Manicure", duration: 60, price: 55, description: "Long-lasting gel polish with intricate nail art options." },
   { id: 302, salonId: 3, name: "Luxury Pedicure", duration: 75, price: 70, description: "Includes exfoliating scrub, hydrating mask, and massage." },
 ];
+
+// Mock reviews for salons
+export const reviews = [
+  { id: 1, salonId: 1, author: "Maria Petrova", rating: 5, comment: "Amazing haircut! The best stylists in Sofia. Highly recommend." },
+  { id: 2, salonId: 1, author: "Elena Georgieva", rating: 4, comment: "Great manicure and very clean studio. Will be back!" },
+  { id: 3, salonId: 3, author: "Silviya Ivanova", rating: 5, comment: "The nail art is out of this world! True professionals." },
+];
